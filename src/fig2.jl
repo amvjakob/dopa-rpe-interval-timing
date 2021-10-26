@@ -123,14 +123,13 @@ function plot_fig_2_A_B(x, coefs_A, errors_A, coefs_B, errors_B, labels;
     title!(fig2A, "A\n")
     title!(fig2B, "B\n")
 
-    """
+    
     titlex = -1.5
     titley = 0.255
     annotate!(fig2A, titlex, titley, text("Bidirectional plasticity function", 
         :black, :center, 9))
     annotate!(fig2B, titlex, titley, text("Control: reverse analysis", 
         :black, :center, 9))
-    """
 
     # merge fig 2A and 2B
     return plot(fig2A, fig2B,
@@ -291,7 +290,6 @@ function plot_fig2(fig2AB, fig2C; kwargs...)
         size=(1000, 700);
         kwargs...)
 end
-
 
 
 ## Maybe delete

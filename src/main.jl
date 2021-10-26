@@ -557,7 +557,8 @@ function get_bidirectional_fn(meta_all, bins_all, sessions;
         bins = bins_all[index,:] |> copy
         
         if baseline_normalization
-            mapcols!(x -> (x - meta.da_baseline) .* .!iszero.(x), bins)
+            bins .-= meta.da_baseline
+            #mapcols!(x -> (x - meta.da_baseline) .* .!iszero.(x), bins)
         end
         
         index = findall(lickbin[1] .< meta.lick .- meta.cue .< lickbin[2])
