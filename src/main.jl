@@ -324,11 +324,14 @@ function load_preprocess_data(dir; verbose=1)
     if fname * "_SNc" in keys(matfile)
         raw = jdict(matfile[fname * "_SNc"])
     elseif fname * "_VTA" in keys(matfile)
-        @warn "No SNc measurements found for mouse $fname, using VTA"
-        raw = jdict(matfile[fname * "_VTA"])
+        @warn "No SNc measurements found for mouse $fname, skipping"
+        return nothing, nothing, nothing, nothing
+        
+        # @warn "No SNc measurements found for mouse $fname, using VTA"
+        # raw = jdict(matfile[fname * "_VTA"])
     else
         @error "No DA measurements found for mouse $fname, skipping"
-        return undef, undef
+        return nothing, nothing, nothing, nothing
     end
 
     # get 
@@ -469,6 +472,9 @@ function get_bins(dir, nbins::Integer=20;
 
     # load preprocessed data
     meta, x, y, yi = load_preprocess_data(dir; verbose=verbose)
+    if isnothing(meta)
+        return nothing, nothing
+    end
 
     # create df for time-bins
     bins = DataFrame(zeros(nrow(meta), nbins), :auto)
@@ -512,15 +518,19 @@ extra signal before cue and after lick.
 function get_trial_da(dir; padding=0.5, verbose=1)
     # load preprocessed data
     meta, x, y, yi = load_preprocess_data(dir; verbose=verbose)
+    if isnothing(meta)
+        return nothing, nothing
+    end
     
-    # 1000 sanmples per second
-    maxlen = ceil(Int, 1000 * (MAX_CUE_TO_LAMP_ON + 2*padding)) + 1
+    # 1000 samples per second
+    maxlen = ceil(Int, 1000 * (MAX_CUE_TO_LAMP_ON + 2*padding)) + 2
     dopa = missings(Union{Missing, Float64}, maxlen, nrow(meta))
 
     # get DA on each trial
     for (i, trial) in enumerate(eachrow(meta))
         a = yi(trial.cue - padding)
         b = yi(trial.cue + MAX_CUE_TO_LAMP_ON + padding)
+        a = max(a, 1)
         b = min(b, length(y))
 
         dopa[1:(b-a+1),i] .= y[a:b]
