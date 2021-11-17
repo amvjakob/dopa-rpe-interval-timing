@@ -13,10 +13,21 @@ $^6$ Center for Brains, Minds and Machines, Massachusetts Institute of Technolog
 
 ### Data
 
-Information available at: https://github.com/harvardschoolofmouse/HSOManalysisPackages
+Data available at: https://github.com/harvardschoolofmouse/HSOManalysisPackages
 
 ### Structure
 
 `.` contains Jupyter notebooks with analysis and figures  
 `src`: contains Julia source files for analysis and figures  
 `figs`: contains figures
+
+### Citation
+
+If you are using this code, please cite [the paper](https://www.biorxiv.org/content/10.1101/2021.11.02.466803v1):
+
+    @article{jakob2021dopamine,
+      title={Dopamine mediates the bidirectional update of interval timing},
+      author={Jakob, AMV and Mikhael, JG and Hamilos, AE and Assad, JA and Gershman, SJ},
+      journal={bioRXiv preprint:2021.11.02.466803},
+      year={2021}
+    }
